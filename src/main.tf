@@ -11,18 +11,6 @@ module "iam_policy" {
   iam_source_policy_documents   = var.iam_source_policy_documents
   iam_override_policy_documents = var.iam_override_policy_documents
 
-  context = module.this.context
-}
-
-module "policy_label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
-
-  context = module.this.context
-}
-
-resource "aws_iam_policy" "ecs_exec_edi" {
-  count  = local.enabled ? 1 : 0
-  name   = module.policy_label_edi.id
-  policy = one(data.aws_iam_policy_document.ecs_exec_edi[*].json)
+  iam_policy_enabled = true
+  context            = module.this.context
 }
