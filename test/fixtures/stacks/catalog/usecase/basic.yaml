@@ -6,7 +6,7 @@ components:
       vars:
         enabled: true
         description: "Example IAM policy"
-        iam_policy: 
+        iam_policy:
           - policy_id: "EC2DescribeInstances"
             version: "2012-10-17"
             statements:
@@ -26,8 +26,8 @@ components:
                   - "s3:ListBucket"
                   - "s3:ListMultipartUploadParts"
                   - "s3:HeadObject"
-        
-        iam_source_policy_documents: 
+
+        iam_source_policy_documents:
           - |
             {
               "Version": "2012-10-17",
@@ -40,8 +40,8 @@ components:
                 }
               ]
             }
-        
-        iam_override_policy_documents: 
+
+        iam_override_policy_documents:
           - |
             {
               "Version": "2012-10-17",
@@ -60,4 +60,3 @@ components:
                 }
               ]
             }
-        
