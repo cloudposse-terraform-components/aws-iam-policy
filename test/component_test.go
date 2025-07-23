@@ -31,7 +31,7 @@ func (s *ComponentSuite) TestBasic() {
 
 	expectedPolicy := map[string]interface{}{
 		"Id": "EC2DescribeInstances",
-		"Statement": []map[string]interface{}{
+		"Statement": []interface{}{
 			{
 				"Action":   "ec2:DescribeInstances",
 				"Effect":   "Allow",
@@ -39,7 +39,7 @@ func (s *ComponentSuite) TestBasic() {
 				"Sid":      "EC2DescribeInstances",
 			},
 			{
-				"Action": []string{
+				"Action": []interface{}{
 					"s3:PutObject",
 					"s3:ListMultipartUploadParts",
 					"s3:ListBucketVersions",
