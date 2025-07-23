@@ -1,3 +1,8 @@
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
+
 variable "iam_policy" {
   type = list(object({
     policy_id = optional(string, null)

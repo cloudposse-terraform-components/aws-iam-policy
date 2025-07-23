@@ -5,6 +5,9 @@ components:
         component: target
       vars:
         enabled: true
+        name: basic
+        attributes:
+         - "policy"
         description: "Example IAM policy"
         iam_policy:
           - policy_id: "EC2DescribeInstances"
