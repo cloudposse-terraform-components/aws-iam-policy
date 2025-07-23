@@ -5,3 +5,59 @@ components:
         component: target
       vars:
         enabled: true
+        description: "Example IAM policy"
+        iam_policy: 
+          - policy_id: "EC2DescribeInstances"
+            version: "2012-10-17"
+            statements:
+              - sid: "EC2DescribeInstances"
+                effect: "Allow"
+                actions:
+                # Purposely using ListInstances instead of DescribeInstances
+                # to test override
+                  - "ec2:ListInstances"
+              - sid: "S3ReadWrite"
+                effect: "Allow"
+                actions:
+                  - "s3:PutObject"
+                  - "s3:GetObject"
+                  - "s3:ListBucketMultipartUploads"
+                  - "s3:ListBucketVersions"
+                  - "s3:ListBucket"
+                  - "s3:ListMultipartUploadParts"
+                  - "s3:HeadObject"
+        
+        iam_source_policy_documents: 
+          - |
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "DenyKmsDecrypt",
+                  "Effect": "Allow",
+                  "Action": "kms:Decrypt",
+                  "Resource": "*"
+                }
+              ]
+            }
+        
+        iam_override_policy_documents: 
+          - |
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "DenyKmsDecrypt",
+                  "Effect": "Deny",
+                  "Action": "kms:*",
+                  "Resource": "*"
+                },
+                {
+                  "Sid": "EC2DescribeInstances",
+                  "Effect": "Allow",
+                  "Action": "ec2:DescribeInstances",
+                  "Resource": "*"
+                }
+              ]
+            }
+        
