@@ -19,6 +19,8 @@ components:
                 # Purposely using ListInstances instead of DescribeInstances
                 # to test override
                   - "ec2:ListInstances"
+                resources:
+                  - "*"
               - sid: "S3ReadWrite"
                 effect: "Allow"
                 actions:
@@ -29,6 +31,8 @@ components:
                   - "s3:ListBucket"
                   - "s3:ListMultipartUploadParts"
                   - "s3:HeadObject"
+                resources:
+                  - "*"
 
         iam_source_policy_documents:
           - |
