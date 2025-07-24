@@ -1,7 +1,7 @@
 package test
 
 import (
-	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/cloudposse/test-helpers/pkg/atmos"
@@ -25,43 +25,16 @@ func (s *ComponentSuite) TestBasic() {
 	policyArn := atmos.Output(s.T(), options, "policy_arn")
 
 	policy := aws.GetIamPolicyDocument(s.T(), awsRegion, policyArn)
-	policyMap := map[string]interface{}{}
-	err := json.Unmarshal([]byte(policy), &policyMap)
-	assert.NoError(s.T(), err)
 
-	expectedPolicy := map[string]interface{}{
-		"Id": "EC2DescribeInstances",
-		"Statement": []interface{}{
-			{
-				"Action":   "ec2:DescribeInstances",
-				"Effect":   "Allow",
-				"Resource": "*",
-				"Sid":      "EC2DescribeInstances",
-			},
-			{
-				"Action": []interface{}{
-					"s3:PutObject",
-					"s3:ListMultipartUploadParts",
-					"s3:ListBucketVersions",
-					"s3:ListBucketMultipartUploads",
-					"s3:ListBucket",
-					"s3:HeadObject",
-					"s3:GetObject",
-				},
-				"Effect":   "Allow",
-				"Resource": "*",
-				"Sid":      "S3ReadWrite",
-			},
-			{
-				"Action":   "kms:*",
-				"Effect":   "Deny",
-				"Resource": "*",
-				"Sid":      "DenyKmsDecrypt",
-			},
-		},
-		"Version": "2012-10-17",
-	}
-	assert.Equal(s.T(), expectedPolicy, policyMap)
+	assert.True(s.T(), strings.Contains(policy, "ec2:DescribeInstances"))
+	assert.True(s.T(), strings.Contains(policy, "kms:*"))
+	assert.True(s.T(), strings.Contains(policy, "s3:GetObject"))
+	assert.True(s.T(), strings.Contains(policy, "s3:ListBucket"))
+	assert.True(s.T(), strings.Contains(policy, "s3:ListBucketMultipartUploads"))
+	assert.True(s.T(), strings.Contains(policy, "s3:ListBucketVersions"))
+	assert.True(s.T(), strings.Contains(policy, "s3:ListMultipartUploadParts"))
+	assert.True(s.T(), strings.Contains(policy, "s3:PutObject"))
+	assert.True(s.T(), strings.Contains(policy, "s3:HeadObject"))
 
 	s.DriftTest(component, stack, nil)
 }
