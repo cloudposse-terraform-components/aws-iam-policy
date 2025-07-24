@@ -1,4 +1,9 @@
-output "mock" {
-  description = "Mock output example for the Cloud Posse Terraform component template"
-  value       = local.enabled ? "hello ${basename(abspath(path.module))}" : ""
+output "json" {
+  description = "JSON body of the IAM policy document"
+  value       = module.iam_policy.json
+}
+
+output "policy_arn" {
+  description = "ARN of created IAM policy"
+  value       = module.iam_policy.policy_arn
 }
