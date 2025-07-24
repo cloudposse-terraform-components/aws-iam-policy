@@ -50,7 +50,7 @@ variable "iam_source_policy_documents" {
   description = <<-EOT
     List of IAM policy documents (as JSON strings) that are merged together into the exported document.
     Statements defined in `iam_source_policy_documents` must have unique SIDs and be distinct from SIDs
-    in `iam_policy` and deprecated `iam_policy_statements`.
+    in `iam_policy`.
     Statements in these documents will be overridden by statements with the same SID in `iam_override_policy_documents`.
     EOT
   default     = null
