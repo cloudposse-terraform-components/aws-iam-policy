@@ -1,32 +1,47 @@
-name: "template"
-
+name: "aws-iam-policy"
 # Canonical GitHub repo
-github_repo: "cloudposse-terraform-components/template"
-
+github_repo: "cloudposse-terraform-components/aws-iam-policy"
 # Short description of this project
 description: |-
-  Description of this component 55
+  Terraform component that composes IAM policy documents and creates an AWS IAM policy.
+
+  - Uses the Cloud Posse `cloudposse/iam-policy/aws` module to merge multiple policy document sources with override semantics.
+  - Exports the rendered policy JSON (`output.json`) and the ARN of the created policy (`output.policy_arn`).
+  - Supports adding base (`iam_source_policy_documents`) and override (`iam_override_policy_documents`) JSON documents, plus first-class typed `iam_policy` statements.
+
+  Note: Description of this component 55
 
 usage: |-
   **Stack Level**: Regional or Global
 
-  Here's an example snippet for how to use this component.
+  Minimal Atmos stack example showing inline statements plus merged JSON documents:
 
   ```yaml
   components:
     terraform:
-      foo:
+      policy:
         vars:
-          enabled: true
+          description: "Example IAM policy"
+
+          # Optional: typed statements (compatible with aws_iam_policy_document)
+          iam_policy:
+            - policy_id: "EC2DescribeInstances"
+              statements:
+                - sid: "EC2DescribeInstances"
+                  effect: "Allow"
+                  actions: ["ec2:DescribeInstances"]
+                  resources: ["*"]
+
+          # Optional: base source policy documents (JSON strings)
+          iam_source_policy_documents:
+            - |
+              {"Version":"2012-10-17","Statement":[{"Sid":"KMS","Effect":"Allow","Action":["kms:*"] ,"Resource":"*"}]}
+
+          # Optional: higher-precedence override documents (JSON strings)
+          iam_override_policy_documents:
+            - |
+              {"Version":"2012-10-17","Statement":[{"Sid":"S3ReadWrite","Effect":"Allow","Action":["s3:GetObject","s3:ListBucket","s3:ListBucketMultipartUploads","s3:ListBucketVersions","s3:ListMultipartUploadParts","s3:PutObject","s3:HeadObject"],"Resource":"*"}]}
   ```
-
-
-
-
-
-include:
-  - "docs/terraform.md"
-
 tags:
   - terraform
   - terraform-modules
@@ -37,38 +52,38 @@ tags:
   - geodesic
   - reference-implementation
   - reference-architecture
-
 # Categories of this project
 categories:
   - terraform-modules/root
   - terraform-components
-
 # License of this project
 license: "APACHE2"
-
 # Badges to display
 badges:
   - name: "Latest Release"
-    image: "https://img.shields.io/github/release/cloudposse-terraform-components/template.svg?style=for-the-badge"
-    url: "https://github.com/cloudposse-terraform-components/template/releases/latest"
+    image: "https://img.shields.io/github/release/cloudposse-terraform-components/aws-iam-policy.svg?style=for-the-badge"
+    url: "https://github.com/cloudposse-terraform-components/aws-iam-policy/releases/latest"
   - name: "Slack Community"
     image: "https://slack.cloudposse.com/for-the-badge.svg"
     url: "https://slack.cloudposse.com"
-
 references:
+  - name: "Cloud Posse IAM Policy Module"
+    description: "Terraform module used by this component"
+    url: "https://registry.terraform.io/modules/cloudposse/iam-policy/aws/latest"
   - name: "Cloud Posse Documentation"
     description: "Complete documentation for the Cloud Posse solution"
     url: "https://docs.cloudposse.com"
   - name: "Reference Architectures"
     description: "Launch effortlessly with our turnkey reference architectures, built either by your team or ours."
     url: "https://cloudposse.com/"
-
+  - name: "AWS IAM Policies"
+    description: "Official AWS IAM policy reference"
+    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
 related:
-- name: "Cloud Posse Terraform Modules"
-  description: Our collection of reusable Terraform modules used by our reference architectures.
-  url: "https://docs.cloudposse.com/modules/"
-- name: "Atmos"
-  description: "Atmos is like docker-compose but for your infrastructure"
-  url: "https://atmos.tools"
-
+  - name: "Cloud Posse Terraform Modules"
+    description: Our collection of reusable Terraform modules used by our reference architectures.
+    url: "https://docs.cloudposse.com/modules/"
+  - name: "Atmos"
+    description: "Atmos is like docker-compose but for your infrastructure"
+    url: "https://atmos.tools"
 contributors: [] # If included generates contribs
