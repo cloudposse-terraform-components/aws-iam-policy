@@ -1,5 +1,4 @@
 locals {
-  enabled = module.this.enabled
 }
 
 module "iam_policy" {
