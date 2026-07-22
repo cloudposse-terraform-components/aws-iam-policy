@@ -3,6 +3,17 @@ variable "region" {
   description = "AWS Region"
 }
 
+variable "use_fullname" {
+  type        = bool
+  default     = true
+  description = <<-EOT
+    If set to 'true', the full ID from the null-label context (e.g. `[namespace]-[environment]-[stage]-[name]`)
+    will be used for the IAM policy name.
+    Otherwise, only `var.name` will be used for the IAM policy name, mirroring the
+    `use_fullname` behavior of the `aws-iam-role` component.
+    EOT
+}
+
 variable "iam_policy" {
   type = list(object({
     policy_id = optional(string, null)
